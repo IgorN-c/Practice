@@ -1,0 +1,4 @@
+---
+example_service:
+  example_username: "Picnic"
+  example_password: !VAULT_example_password

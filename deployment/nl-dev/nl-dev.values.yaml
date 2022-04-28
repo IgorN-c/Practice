@@ -1,0 +1,5 @@
+---
+environment: dev
+market: nl
+# Timezone: UTC
+schedule: "0 0 * * *" # Every day at 12AM

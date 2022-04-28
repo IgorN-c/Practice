@@ -1,0 +1,14 @@
+[[source]]
+url = "https://${NEXUS_USERNAME}:${NEXUS_PASSWORD}@nexus.global.picnicinternational.com/repository/pypi-public/simple"
+verify_ssl = true
+name = "picnic"
+
+[dev-packages]
+picnic-guide = "==1.6.7"
+
+[packages]
+picnic-monitoring = {version = "~=0.3.2", extras = ["sentry"]}
+picnic-tools = "~=0.18.3"
+
+[requires]
+python_version = "3.10"

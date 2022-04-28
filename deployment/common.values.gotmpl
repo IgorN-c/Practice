@@ -1,0 +1,19 @@
+department: team-name
+
+image: teampicnic/practice-practice-dwh:{{ env "IMAGE_TAG" | default "latest" }}
+imagePullPolicy: Always
+
+# Retry this many times more in case of job failure
+backoffLimit: 0
+
+vault:
+  syncSecrets:
+    enabled: true
+    subPaths:
+      - python-platform/sentry
+secrets:
+  - name: SENTRY_DSN
+    valueFrom:
+      secretKeyRef:
+        name: app-team-name-practice-dwh-sentry
+        key: sentry_dsn

@@ -1,0 +1,20 @@
+---
+helmDefaults:
+  kubeContext: picnic-nl-dev
+  tillerNamespace: team-name
+
+# prettier-ignore
+repositories:
+  - name: picnic-charts
+    url: https://nexus.global.picnicinternational.com/repository/helm/
+    username: {{ requiredEnv "NEXUS_USERNAME" | quote }}
+    password: {{ requiredEnv "NEXUS_PASSWORD" | quote }}
+
+releases:
+  - name: practice-dwh
+    namespace: team-name
+    chart: picnic-charts/cron-image
+    version: 5.0.0
+    values:
+      - ../common.values.gotmpl
+      - nl-dev.values.yaml

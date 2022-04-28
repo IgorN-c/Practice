@@ -1,0 +1,15 @@
+---
+version: "3"
+
+services:
+  practice_dwh:
+    image: "teampicnic/practice-practice-dwh:latest"
+    build:
+      context: ""
+      dockerfile: Dockerfile
+      args:
+        - PROJECT_SLUG=practice_dwh
+        - NEXUS_USERNAME=${NEXUS_USERNAME}
+        - NEXUS_PASSWORD=${NEXUS_PASSWORD}
+    env_file:
+      - .env
