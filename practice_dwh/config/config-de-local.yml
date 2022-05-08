@@ -1,6 +1,6 @@
 ---
 dwh:
-  database: picnic_nl_prod
+  database: picnic_de_prod
   warehouse: ANALYSIS
   role: analyst
   account: uj82639.eu-west-1
@@ -8,4 +8,4 @@ dwh:
 picnic-client:
   keycloak: null
 datalayer:
-  url: "https://datalayer-dev.nl.picnicinternational.com"
+  url: "https://datalayer-dev.de.picnicinternational.com"

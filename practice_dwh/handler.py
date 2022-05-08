@@ -1,10 +1,8 @@
 """High level logic handler."""
 
-from asyncio.log import logger
 import logging
 
-from picnic.database import DatabaseClientFactory
-from picnic.definitions import Environment
+from picnic.database import DatabaseClient
 
 from practice_dwh import PROJECT_ROOT_DIR
 
@@ -18,30 +16,23 @@ class PracticeDwhHandler:
     Expose `run()` method as an entrypoint to handle the logic.
     """
 
-    def __init__(self, name: str):
+    def __init__(self, dwh_client: DatabaseClient):
         """Initialize PracticeDwhHandler class.
 
         Args:
-            name: Name to process.
+            dwh_client: Client to connect to Picnic DWH.
         """
-        self.name = name
+        self.dwh_client = dwh_client
 
     def run(self):
-        """Execute ETL to get the total orders (to be) delivered yesterday and today.
-        """
+        """Execute ETL to get the total orders (to be) delivered yesterday and today."""
         self._extract()
 
     def _extract(self):
-        dwh_client = DatabaseClientFactory(
-            Environment("local"),
-            database="picnic_nl_prod", 
-            warehouse="ANALYSIS",
-            role="analyst",
-            account="uj82639.eu-west-1",
-            username="igor.neifach@teampicnic.com",
-        ).get_client()
         orders_yesterday = next(
-            dwh_client.select(query=(QUERY_PATH/"deliveries.sql").read_text()).as_dicts()
+            self.dwh_client.select(
+                query=(QUERY_PATH / "deliveries.sql").read_text()
+            ).as_dicts()
         )["delivered_orders"]
 
-        LOGGER.info(f"Nr. of fulfilled orders yesterday: {orders_yesterday}")
+        LOGGER.info("Nr. of fulfilled orders yesterday: %s", orders_yesterday)
