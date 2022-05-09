@@ -3,9 +3,10 @@
 import warnings
 from dataclasses import dataclass
 
-from picnic.database import DatabaseClientFactory
 from picnic.tools import config_loader, logging
 from picnic.tools.general_tools import initiate_logging
+from picnic.database import DatabaseClientFactory
+from picnic.client import ClientFactory
 
 from practice_dwh import PROJECT_ROOT_DIR
 from practice_dwh.handler import PracticeDwhHandler
@@ -51,7 +52,9 @@ def main():
     LOGGER.info("'practice-dwh' service initialized.".upper())
 
     handler = PracticeDwhHandler(
-        dwh_client=DatabaseClientFactory.from_config(project_config.config).get_client()
+        dwh_client=DatabaseClientFactory.from_config(project_config.config).get_client(),
+        backend_client=ClientFactory.from_config(project_config.config).get_sync(),
+        datalayer_config=project_config.config["datalayer"],
     )
     handler.run()
 
