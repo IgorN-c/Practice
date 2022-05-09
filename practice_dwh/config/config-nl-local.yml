@@ -10,5 +10,5 @@ picnic-client:
 datalayer:
   url: "https://datalayer-dev.nl.picnicinternational.com"
   api_name: "api/15/order"
-  includeCancelled: False
-  excludeTestOrders: False
+  includeCancelled: false
+  excludeTestOrders: false

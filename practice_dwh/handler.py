@@ -2,11 +2,9 @@
 
 import logging
 from datetime import date
-from typing import Dict
-from xmlrpc.client import Boolean
 
-from picnic.database import DatabaseClient
 from picnic.client.sync import Client
+from picnic.database import DatabaseClient
 
 from practice_dwh import PROJECT_ROOT_DIR
 
@@ -31,6 +29,7 @@ class PracticeDwhHandler:
         Args:
             dwh_client: Client to connect to Picnic DWH.
             backend_client: Client to make HTTPS requests to Picnic backends.
+            datalayer_config: Configuration for datalayer domain access.
         """
         self.dwh_client = dwh_client
         self.backend_client = backend_client
@@ -57,7 +56,7 @@ class PracticeDwhHandler:
             "deliveryDateLast": date_today,
             "includeCancelled": self.datalayer_config["includeCancelled"],
             "excludeTestOrders": self.datalayer_config["excludeTestOrders"],
-            }
+        }
         response = self.backend_client.get(
             url=f"{self.datalayer_config['url']}/{self.datalayer_config['api_name']}",
             params=query_params,
