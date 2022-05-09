@@ -8,4 +8,7 @@ dwh:
 picnic-client:
   keycloak: null
 datalayer:
-  url: "https://datalayer-dev.de.picnicinternational.com"
+  url: "https://datalayer-dev.de.picnicinternational.com" # choose dev/prod datalayer
+  api_name: "api/15/order"
+  includeCancelled: false
+  excludeTestOrders: false

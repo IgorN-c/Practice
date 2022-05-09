@@ -34,20 +34,23 @@ class PracticeDwhHandler:
         self.dwh_client = dwh_client
         self.backend_client = backend_client
         self.datalayer_config = datalayer_config
+        self.orders_yesterday = 0
+        self.orders_today = 0
+        self.orders_since_yesterday = 0
 
     def run(self):
         """Execute ETL to get the total orders (to be) delivered yesterday and today."""
         self._extract_dwh()
         self._extract_datalayer()
+        self._transform()
+        self._load()
 
     def _extract_dwh(self):
-        orders_yesterday = next(
+        self.orders_yesterday = next(
             self.dwh_client.select(
                 query=(QUERY_PATH / "deliveries.sql").read_text()
             ).as_dicts()
         )["delivered_orders"]
-
-        LOGGER.info("Nr. of fulfilled orders yesterday: %s", orders_yesterday)
 
     def _extract_datalayer(self):
         date_today = date.today().strftime("%Y-%m-%d")
@@ -63,5 +66,22 @@ class PracticeDwhHandler:
         )
         response.raise_for_status()
 
-        orders_today = len(response.json()["orders"])
-        LOGGER.info("Nr. of fulfilled orders today: %s", orders_today)
+        self.orders_today = len(response.json()["orders"])
+
+    def _transform(self):
+        self.orders_since_yesterday = self.orders_yesterday + self.orders_today
+
+    def _load(self):
+        LOGGER.info(
+            """\n
+            ===========================================
+            Nr. of fulfilled orders yesterday: %s\n
+            Nr. of fulfilled orders today: %s\n
+            ----------------
+            TOTAL: %s\n
+            ===========================================
+            """,
+            self.orders_yesterday,
+            self.orders_today,
+            self.orders_since_yesterday,
+        )
