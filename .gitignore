@@ -1,5 +1,8 @@
 practice_dwh/__pycache__
+tests/__pycache__
 .env
 .vscode
 .mypy_cache
+.pytest_cache
+.converage
 Pipfile.lock
